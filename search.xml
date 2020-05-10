@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[20200510-cocos小游戏系列二]]></title>
+    <url>%2F20200510-cocos%E5%B0%8F%E6%B8%B8%E6%88%8F%E7%B3%BB%E5%88%97%E4%BA%8C.html</url>
+    <content type="text"><![CDATA[本篇介绍我设计的游戏页面基类BaseScene。用来虚拟一个页面栈，以及模拟一个onshow方法。 cocos只允许同时渲染一个场景,构建一个页面栈就非常必要 一个场景只有onLoad()和start()两个生命周期方法。页面再次渲染时无 onShow() 代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061const sceneStack: Array&lt;cc.Node&gt; = [];export default class BaseScene extends cc.Component &#123; // 主导演 public director: cc.Director = cc.director; public sceneStack = sceneStack; onDestroy() &#123; console.log("***********",this.name," onDestroy ************"); &#125; /** * 模拟的生命周期方法 */ onShowFromStack()&#123; console.log("onShowFromStack 子类重写"); &#125; /** * pushScene &amp; popScene 配合使用 * @param scene 需要push的场景名 * @param onLaunched 场景加载完成后的回调方法 */ pushScene(scene: string, onLaunched?: Function) &#123; console.log("pushScene"); cc.game.addPersistRootNode(this.node); this.sceneStack.push(this.node); this.director.loadScene(scene, (options) =&gt; &#123; this.node.active = false; //打印 // printStack() onLaunched &amp;&amp; onLaunched(options); &#125;); &#125; /** * popScene &amp; pushScene */ popScene() &#123; let node = this.sceneStack.pop(); node.active = true; node.getComponent('BaseScene').onShowFromStack() cc.game.removePersistRootNode(node); this.node.destroy() this.destroy() //打印 // printStack() &#125; /** * 替换Scene */ replaceScene(scene: string, onLaunched?: Function)&#123; this.director.loadScene(scene, (options) =&gt; &#123; //打印 // printStack() onLaunched &amp;&amp; onLaunched(options); &#125;); &#125;&#125;]]></content>
+      <categories>
+        <category>游戏</category>
+      </categories>
+      <tags>
+        <tag>游戏</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[20200509-游戏开发框架搭建一]]></title>
+    <url>%2F20200509-cocos%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97%E4%B8%80.html</url>
+    <content type="text"><![CDATA[本篇文章介绍游戏开发过程中如果将游戏开发工程化，像开发app一样开发游戏 技术选型 TypeScript 语言 cocos 引擎 CocosCreator、VSCode 开发工具 项目结构123456789101112131415161718192021222324252627/animations -- 动画资源 /animation_anim /animation_prefab /animation_texture/base BaseScene.ts BasePrefab.ts/components -- 公用组件 预制体、脚本 /popup basePopup.ts popup.prefab /other/resources -- loadRes 动态加载/scene /MainScene MainScene.fire MainScene.ts/static /images -- 图片资源 /media -- 媒体资源/utils -- 工具类 common.js globalFunction.js md5.js /api token.js http.js 着重讲一下，抽离基类 BaseScene.ts、BasePrefab.ts，将一些相关方法封装到BaseScene.ts中，其他的场景均继承自基类。这样做的好处 代码更加洁简 增加可重构性 注意不建议封装功能特别大、多的基类。这样增加了基类的耦合性。可将同类方法抽离成接口。再在不同的类中进行继承。仅仅是为了去重而写基类是不合理的 命名规范12345678资源 icon_btn_1.jpg 短横线预制体 popup_prefab.prefab场景 MainScene 大驼峰脚本 小驼峰变量 小驼峰 let timeScope = 242342 let _this = this let _scope = scope 脚本规范 添加MARK标记 冗余代码删除 缩进 两个空格 onClick*** function 单一职责：一个方法，一个功能，解耦 12345/// MARK: 属性声明/// MARK: 生命周期函数/// MARK: 私有方法/// MARK: 网络请求 request_home() 感想虽未深入涉足游戏开发，但是感觉目前的游戏开发社区依然不够火热（可能是相较于其他开发领域）。游戏开发工程师可能在开发游戏的过程中忽略了游戏开发也属于一项软件工程。而软件工程架构设计和规范是值得思考的。游戏开发过程中不能仅仅关注游戏的界面。在这段时间使用cocoscreator开发小程序的过程中发现，大多数游戏开发工程师在进行游戏开发时，更多得使用可视化的拖控件功能。这种操作非常不够技术性。更加偏向于美工设计工作。我个人更加提倡游戏开发者应该将重点聚焦在逻辑实现和代码的架构方向。譬如，去了解MVC、去构建页面栈、多平台兼容等]]></content>
+      <categories>
+        <category>游戏</category>
+      </categories>
+      <tags>
+        <tag>游戏</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[webpack打包解析二]]></title>
+    <url>%2F20200422-20200422-webpack-bundle-loader.html</url>
+    <content type="text"><![CDATA[目的：接上一文，本文解析 webpack打包带css-loader的bundle文件 一、准备 1、./src/main.js 1234import './main.css';let div = document.getElementById('div')div.classList.add('test')console.log('css-loader') 2、./src/main.css 1234.test&#123; color: red; background-color: blue;&#125; 3、webpack.config.js 注意在使用css-loader 时需要加载 style-loader 和 css-loader,且顺序不可写错 1234567891011121314151617181920212223const path = require('path');module.exports = &#123; mode: 'development', entry: &#123; main: './src/main.js' &#125;, output: &#123; filename: '[name].bundle.js', path: path.resolve(__dirname,'dist') &#125;, module: &#123; rules: [ &#123; test: /\.css$/, use: [ 'style-loader', 'css-loader' ] &#125; ] &#125;&#125; 4、打包生成的文件main.bundle.js 5、打包后的文件是一个IIFE自执行函数表达式，根据上文解析。函数体部分作用就是递归加载参数模块。 模块区分如下：1234567891011121314151617181920212223242526272829&#123; "./node_modules/css-loader/dist/cjs.js!./src/main.css": (function(module, exports, __webpack_require__) &#123; eval("// Imports..."); &#125;), "./node_modules/css-loader/dist/runtime/api.js": (function(module, exports, __webpack_require__) &#123; "use strict"; eval("//..."); &#125;), "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js": (function(module, exports, __webpack_require__) &#123; "use strict"; eval("//..."); &#125;), "./src/main.css": (function(module, exports, __webpack_require__) &#123; eval("//..."); &#125;), "./src/main.js": (function(module, __webpack_exports__, __webpack_require__) &#123; "use strict"; eval("//..."); &#125;)&#125; 6、将webpack编译好的5个单模块字符串整理成5个js文件以方便分析 ./node_modules/css-loader/dist/runtime/api.js ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js main.js.js webpack 编译完main.js后生成的js文件 main.css.js webpack 编译完main.css后生成的js文件 cjs.js!./src/main.css.js 二、部分解读 2.1、css-loader 中的api.js 123456789101112module.exports = function (useSourceMap) &#123; var list = []; // return the list of modules as css string list.toString = function toString() &#123;//... 定义了一个toStirng方法 &#125;; list.i = function (modules, mediaQuery, dedupe) &#123;//... 定义了一个i 方法 &#125;; return list;&#125;;//...function cssWithMappingToString(item, useSourceMap)function toComment(sourceMap) - 不难发现css-loader 返回了一个空的数组 []. 且在这个数组方法上挂了几个方法 2.2、cjs.js!./src/main.css.js 123456789var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");exports = ___CSS_LOADER_API_IMPORT___(false);// Moduleexports.push([module.i, ".test&#123;\ color: red;\ background-color: blue;\&#125;", ""]);// Exportsmodule.exports = exports; - 得到了一个 [&quot;样式表名&quot;,&quot;样式字符串&quot;,&quot;&quot;] 这样的一个数据原（元组） 2.3、main.css.js 12345678910111213141516171819var api = __webpack_require__(/*! ../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");var content = __webpack_require__(/*! !../node_modules/css-loader/dist/cjs.js!./main.css */ "./node_modules/css-loader/dist/cjs.js!./src/main.css");content = content.__esModule ? content.default : content;if (typeof content === 'string') &#123; content = [[module.i, content, '']];&#125;var options = &#123;&#125;;options.insert = "head";options.singleton = false;var update = api(content, options);var exported = content.locals ? content.locals : &#123;&#125;;module.exports = exported; - 不难发现 main.css.js 主要执行了的方法就是 api(content, options); 2.4、injectStylesIntoStyleTag.js 12345678910111213141516171819202122232425262728293031323334353637383940//...function modulesToDom(list, options) &#123; // ... stylesInDom.push(&#123; identifier: identifier, updater: addStyle(obj, options), references: 1 &#125;); // ... return identifiers;&#125;function insertStyleElement(options) &#123; var style = document.createElement('style'); //... Object.keys(attributes).forEach(function (key) &#123; style.setAttribute(key, attributes[key]); &#125;); //... return style;&#125;// ...function addStyle(obj, options) &#123; // ... style = insertStyleElement(options); // ...&#125;module.exports = function (list, options) &#123; //... var lastIdentifiers = modulesToDom(list, options); return function update(newList) &#123; // ... &#125;;&#125;; - 最终发现 通过injectStylesIntoStyleTag.js动态得生成style标签，再将.css中的样式挂载到style标签中 三、总结 webpack 打包带css-loader、style-loader的脚本执行过程，是通过css-loader生成对应的css样式 [&quot;样式表名&quot;,&quot;样式字符串&quot;,&quot;&quot;] 数组。再通过 style-loader 挂载到 &lt;style&gt; 标签上。 此篇文章写得不伦不类。建议仔细分析打包后的bundle.js文件。本文仅做参考 在阅读代码过程中，我们得抽丝剥茧，专注于执行过程。对于阅读过程中遇到的定义部分先做忽略即可。等调用时再做思考。这样才能让我们更加专注]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[webpack打包解析一]]></title>
+    <url>%2F20200421-20200421-webpack-bundle-resolve.html</url>
+    <content type="text"><![CDATA[目的：解析 webpack 打包出来的最简单的一个bundle.js脚本 一、准备 1、./src/main.js 1234const test = require('./test');test()console.log("hellowebpack") 2、./src/test.js 123module.exports = function()&#123; console.log('log test')&#125; 3、webpack.config.js 123456789101112const path = require('path');module.exports = &#123; mode: 'development', entry: &#123; main: './src/main.js' &#125;, output: &#123; filename: '[name].bundle.js', path: path.resolve(__dirname,'dist') &#125;&#125; 4、打包生成的文件main.bundle.js 二、处理main.bundle.jsmain.bundle.js 简化处理的文件 2.1、自执行函数表达式 IIFE 不难发现整体js是一个自执行函数表达式IIFE (FUNCTION)(PARAMS); IIFE 的函数体部分（FUNCTION） 内部定义了一个函数 __webpack_require__，返回的是执行__webpack_require__(&quot;./src/main.js&quot;);结果。 IIFE 的参数部分是一个 Map {key:value},key为路径，value为函数 function(module,exports,__webpack_require__){}，函数执行 eval(“string”) 123456789101112131415161718192021222324252627282930313233(function(modules) &#123; // The module cache var installedModules = &#123;&#125;; function __webpack_require__(moduleId) &#123; // ... // Create a new module (and put it into the cache) var module = installedModules[moduleId] = &#123; i: moduleId, l: false, exports: &#123;&#125; &#125;; // 步骤一 modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); // ... // Return the exports of the module return module.exports; &#125; // ... return __webpack_require__(__webpack_require__.s = "./src/main.js");&#125;)(&#123; "./src/main.js": (function(module, exports, __webpack_require__) &#123; eval("const test = __webpack_require__(/*! ./test */ \"./src/test.js\");\n\ntest()\n\nconsole.log(\"hellowebpack\")\n\n\n//# sourceURL=webpack:///./src/main.js?"); &#125;), "./src/test.js": (function(module, exports) &#123; eval("module.exports = function()&#123;\n console.log('log test')\n&#125;\n\n//# sourceURL=webpack:///./src/test.js?"); &#125;)&#125;); 2.2、IIFE的执行 先定义 installedModules 用来存储加载成功的模块 定义内部函数 function __webpack_require__(moduleId){} 触发内部函数 __webpack_require__(__webpack_require__.s = &quot;./src/main.js&quot;); 此处传入的参数即为 配置中的entry 入口路径 __webpack_require__(&quot;./src/main.js&quot;) 直至运行到 步骤一 2.3、Function.prototype.call() 执行加载模块1modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); 此时开始真正的加载模块, 获取 自执行函数参数（PARAMS）的 ‘./src/main.js’ 模块。 123(function(module, exports, __webpack_require__) &#123; eval("const test = __webpack_require__(/*! ./test */ \"./src/test.js\");\n\ntest()\n\nconsole.log(\"hellowebpack\")\n\n# sourceURL=webpack:///./src/main.js?"); &#125;).call(module.exports, module, module.exports, __webpack_require__); 加载过程中 使用 eval(str) 函数执行webpack编译好的单模块字符串 webpack 在编译js文件时遇到依赖模块，会将依赖方法替换成 __webpack_require__ 函数。如 const test = __webpack_require__(/*! ./test */ \&quot;./src/test.js\&quot;); eval()在执行过程，再递归调用 __webpack_require__ 函数来加载对应的依赖模块 2.4、递归调用 __webpack_require__(&quot;./src/test.js&quot;)123(function(module, exports) &#123; eval("module.exports = function()&#123;\n console.log('log test')\n&#125;\n\n//# sourceURL=webpack:///./src/test.js?"); &#125;).call(module.exports, module, module.exports, __webpack_require__); 将 test.js 中的 exports 挂载到 module.exports中。完成函数调用 递归的__webpack_require__函数调用。执行了模块代码.且将模块加载结果保存到 installedModules 中。如上执行结果，installedModules 结果如下 123456789101112installedModules = &#123; "./src/main.js":&#123; i: "./src/main.js", l: true, exports: &#123;&#125; &#125;, "./src/test.js":&#123; i: "./src/test.js", l: true, exports: function()&#123;console.log('log test')&#125; &#125;&#125; 三、总结 本文解析的是webpack打包完成的bundle.js。讲的是webpack的执行流程而非编译过程。 IIFE中的函数体部分(FUNCTION)目的是递归的加载(PARAMS)中的模块代码 下一篇：分析 带loader的 webpack打包出来的bundle.js脚本]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[如何变成靠谱的人?]]></title>
+    <url>%2F20191123-be-reasonable.html</url>
+    <content type="text"><![CDATA[一个靠谱的人应该具有什么特质？1、工作有态度 给人确定性 提高做事标准，不满足现状 2、能力超预期 专业 3、做事有结果 做事有结果，有反馈， 敢于担当 感想其实就是做事情的三个阶段： 做事前 – 做事中 – 做事后 做事前，能给人确定性，这个确定性不仅仅告诉人这个方案可以实现，而是能让人放心你可以做好它；你得有一个自己的做事标准。而这个标准是需要不断去提高的。 做事中，你得有专业的技术，精湛的技能总能赢得一片喝彩。 做事后，做事情得有结果，有始还得有终。当然你得有担当。而真正做到这却不是很简单]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>工作总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[3月份总结]]></title>
+    <url>%2F20190331-Mar-work-conclusion.html</url>
+    <content type="text"><![CDATA[2019年3月份总结1、工作上经过了1个月的疯狂加班，终于将天天领鸡蛋项目编码完成，并且基本测试完成。但是对于我来说这个任务并没有完全完成好。原因有： 1、在项目开始阶段没有定位自己的角色。在目前这个阶段我们三个开发均属于“半吊子”。而此时作为领导的三郎是希望将我定位为技术主要负责人。而我却并没有做好如此的准备。这导致了项目开始阶段我决意采用小游戏的方案来实现。但是最终踩坑。 2、没有抓住问题的重点。我们的项目的目的并不是养一只小鸡。正在的本质目标是培养用户的做任务的习惯。而做任务才是我们能带来利益的关键。故，应该把事务的本质抓住。项目开始时立刻验证功能逻辑是否走得通。这样在技术选项时即可将问题找到，避免了后面的弯路。 3、于团队合作层面来说，这次团队合作并不正常。项目一开始，整体开发人员中只有我一人处于针对项目工作。其余人员处于“自我提升”中。在两个星期后才开始正式得进入开发状态中，后才发现问题所在。这也是本次ORK没有完成的一个主要原因。 2、心态上2019年始，工作了4年。从上海转杭州也已经工作满两年。一直从事iOS开发工作。对于iOS开发的技能提升的确在每一年都有很大的提升。但是我现在依然觉得只是认知上的提升。2018年我尝试了RAC、Swift、RxSwift、组件化、OpenCV等等。但是却属于一知半解。这种效果并不是我现在想看到的。于我来说并没有益处。2018年低，公司大裁员。在急缺前端开发的时候裁掉了仅有的两位前端开发人员。转让我、小海、志豪三个客户端开发人员来做前端小程序开发。一开始是很可以接受的。心理想着有机会可以做小程序了，挺有意思的。但是后来我渐渐感觉小程序、前端市场的确火爆，而iOS行业并不景气。这让我心态确实波动不少。现在围绕着我的是如何高薪转做其他技术行业。这是一种对iOS行业丧失信心，对其他行业缺乏自信的感觉。 3、规划今年必须在工资上有新的突破，2019年跳槽目标必须在20k以上。但是我由于3月份疯狂加班丧失了太多的复习时间。4月份必须认真复习。而此时的复习目标是现在必须定下来的。欠下的知识点必须一点一滴全部还上。那么接下来4月份的规划是如何呢： 1、本着技术是一门精通，其他广阔涉猎的原则。不能丧失老本行，iOS技术必须扎实得打牢。 2、前端技术在工作中认真学习不断提升前端技术的认知。 3、java的学习先缓一缓。今年的目标达成即可。但是在4月份必须抽出时间对目前学习的java技术进行总结和回顾，防止发生遗忘的现象。]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>工作总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[iOS知识点备忘]]></title>
+    <url>%2F20190327-iOSPoints.html</url>
+    <content type="text"><![CDATA[软件基础数据结构 &amp; 算法 网络相关 Http iOSObjective-C、Swift [ ] Objective-C 内存管理 Block的理解和使用 多线程 iOS多线程编程（Thread,GCD,NSOperation） OC对象的本质 KVO探索实践 runtime理解和使用 runloop理解和使用 消息转发机制 AOP切片编程（Aspects） 自动释放池 @autoreleasepool [ ] Swift iOS多线程编程（GCD） 操作系统 iOS内存管理和调优 iOS的文件系统和沙盒机制 iOS系统的各种安全机制 library,framework的制作 LLVM 原理和调优 LLVM、GCC、GNU和Clang对比 网络编程 iOS网络和服务器编程（NSURLConnection,NSURLSession） iOS网络发送机制调整和优化（NSURLSession） Socket编程 网络传输中的各种保障 对传输协议的调整优化 数据库&amp;持久化方案 常规持久化方案（Keychain,NSUserDefaults,Sqlite,CoreData） 数据库的使用和设计（Sqlite） 数据结构优化，Sql调优 图形图像编程 UIKit,Core Animation和Core Text的绘制 Core Graphics, Quartz 2D, Media Player, AV Foundation OpenGL ES, GLKit, SpriteKit, SceneKit, Metal iOS的安全机制 本地数据存储安全（Keychain） 授权和身份验证 传输安全（对称, 非对称, SSL） App代码安全 代码签名机制 DEP ASLP Hybrid 编程 WkWebView开发 前端-iOS通讯机制 组件化 路由到中间件的转变 组件化模块划分方法 pod管理组件化 RxSwift链式响应式编程、RAC RxSwift的简单使用 MVVM架构 第三方库使用 Texture App性能提升方案 业务能力 一般性业务功能需求分析及实现 重要业务模块的需求分析及实现 中小规模产品的架构，系统设计和实现 大规模产品或产品线的架构，系统设计和实现 平台级产品的架构，系统设计和实现 OpenCV图像识别技术 图像边缘检测]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[String对比]]></title>
+    <url>%2F20190219-StringEqual.html</url>
+    <content type="text"><![CDATA[在java中String.class equals方法的源码 12345678910111213141516171819202122232425262728293031@Override public boolean equals(Object other) &#123; /// 1、 先判断地址是否相同 if (other == this) &#123; return true; &#125; /// 2、判断对比对象是否是字符串 if (other instanceof String) &#123; String s = (String)other; int count = this.count; /// 3、判断长度 if (s.count != count) &#123; return false; &#125; /// 4、判断hash值是否相同 if (hashCode() != s.hashCode()) &#123; return false; &#125; /// 5、一个字符串一个字符串对比 for (int i = 0; i &lt; count; ++i) &#123; if (charAt(i) != s.charAt(i)) &#123; return false; &#125; &#125; return true; &#125; else &#123; return false; &#125;&#125;]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[iOS-runloop笔记]]></title>
+    <url>%2F20190214-runloop.html</url>
+    <content type="text"><![CDATA[1、理解Runloop Runloop 可以想象成一个“机智的循环”，类比 “while”循环,开启后会一直循环下去。而runloop循环是有事情做的时候才开始执行任务，没事情时就不用执行任务,节省无谓的等待和占用。 Runloop 可以让线程在需要做事的时候忙起来，不需要的话就让线程休眠。 2、Runloop和线程 Runloop和线程是绑定在一起的, 每个线程都会有一个对应的Runloop对象,我们不能自己创建Runloop,但是可以获取当前线程的Runloop对象. Runloop默认是不开启的,需要手动开启;主线程中的Runloop自动开启,其他线程的Runloop需要手动开启. Runloop可以让线程一直活下去,相当于在线程中开了一个死循环.While循环.(注意:并不是在线程中设置”[[NSRunloop currentRunloop] run]”后即可保证线程一直存活,这涉及到Runloop接收和处理的事件,如果runloop未接收到任务,仅仅是run,那么线程并不会一直活下去). Runloop是线程自带的一个循环机制,默认情况下循环并不开启.当runloop接收到指定Mode的任务并且开启后,这个机制便会让这个线程去执行这个任务.所以runloop这个循环导致了线程不会挂掉. 验证:1234567891011///1、重写了NSThread,在TRThread的dealloc中添加了打印日志 NSLog(@"线程死了");///2、开启一个子线程,接下来研究这个线程中的RunLoop对象在干啥TRThread *thread = [[TRThread alloc] initWithBlock:^&#123; //这是线程的第一个任务————做个自我介绍 NSLog(@"我是线程:%@",[TRThread currentThread]); [[NSRunLoop currentRunLoop] run]; NSLog(@"线程任务执行完成,线程要死了");&#125;];[thread start]; 结果:123[46505:1552649] 我是线程:&lt;TRThread: 0x6000010bf300&gt;&#123;number = 3, name = (null)&#125;[46505:1552649] 线程任务执行完成,线程要死了[46505:1552649] 线程走了 3、Runloop的任务来源 Source通过下图可以知道runloop接收两种事件源————Input Source、 Timer Source 其中Input Source分为 Post 系统层(sorket) Custom 用户创建的Source performSelectore 4、Runloop Mode给Runloop添加的每一个事件源都必须设置mode. runloop只运行指定状态的任务.常见状态有三种: NSDefaultRunLoopMode 默认 UITrackingRunLoopMode UI相关 NSRunLoopCommonModes 组合(NSDefaultRunLoopMode&amp;UITrackingRunLoopMode) 常见场景: 如下代码,当页面上有ScrollView滑动时,定时器不被触发 ,因为当Scrollview滑动时主现场的runloop执行的是 UITrackingRunLoopMode,而不执行NSDefaultRunLoopMode的任务1234NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(callThings) userInfo:nil repeats:YES];[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];///修改为CommonModes即可//[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes]; 要切换mode,需要停止当前的loop,重启新的loop 5、Runloop Observer(未完待续) 相关文章:runloop源码孙源分享的视频https://blog.ibireme.com/2015/05/18/runloop/RunLoop在iOS开发中的应用]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo使用笔记]]></title>
+    <url>%2F20190212-hexonote.html</url>
+    <content type="text"><![CDATA[0.创建hexo框架 123$ hexo init &lt;foldername&gt;$ cd &lt;folername&gt;$ npm install 1.创建笔记 123$ hexo new [layout] &lt;title&gt;/// layout : post \ page \ draft 2.生成网站页面(generate) 1$ hexo g 3.运行网页(service) 1$ hexo s 4、清理缓存 1$ hexo clean 5、发布 1$ hexo d]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+</search>
