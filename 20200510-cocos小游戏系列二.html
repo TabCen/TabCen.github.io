@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="TabCen&#39;s blog~">
 <meta property="og:description" content="本篇介绍我设计的游戏页面基类BaseScene。用来虚拟一个页面栈，以及模拟一个onshow方法。   cocos只允许同时渲染一个场景,构建一个页面栈就非常必要 一个场景只有onLoad()和start()两个生命周期方法。页面再次渲染时无 onShow()  代码12345678910111213141516171819202122232425262728293031323334353637">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-10T16:32:48.488Z">
+<meta property="og:updated_time" content="2020-07-10T15:40:02.278Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20200510-cocos小游戏系列二">
 <meta name="twitter:description" content="本篇介绍我设计的游戏页面基类BaseScene。用来虚拟一个页面栈，以及模拟一个onshow方法。   cocos只允许同时渲染一个场景,构建一个页面栈就非常必要 一个场景只有onLoad()和start()两个生命周期方法。页面再次渲染时无 onShow()  代码12345678910111213141516171819202122232425262728293031323334353637">
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-05-11 00:32:48" itemprop="dateModified" datetime="2020-05-11T00:32:48+08:00">2020-05-11</time>
+                <time title="修改时间：2020-07-10 23:40:02" itemprop="dateModified" datetime="2020-07-10T23:40:02+08:00">2020-07-10</time>
               
             
           </span>
@@ -512,7 +512,12 @@
 <li>一个场景只有onLoad()和start()两个生命周期方法。页面再次渲染时无 onShow()</li>
 </ul>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sceneStack: <span class="built_in">Array</span>&lt;cc.Node&gt; = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> BaseScene <span class="keyword">extends</span> cc.Component &#123;</span><br><span class="line">  <span class="comment">// 主导演</span></span><br><span class="line">  <span class="keyword">public</span> director: cc.Director = cc.director;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> sceneStack = sceneStack;</span><br><span class="line"></span><br><span class="line">  onDestroy() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"***********"</span>,<span class="keyword">this</span>.name,<span class="string">" onDestroy ************"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 模拟的生命周期方法</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  onShowFromStack()&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"onShowFromStack 子类重写"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * pushScene &amp; popScene 配合使用</span></span><br><span class="line"><span class="comment">   * @param scene 需要push的场景名</span></span><br><span class="line"><span class="comment">   * @param onLaunched 场景加载完成后的回调方法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  pushScene(scene: <span class="built_in">string</span>, onLaunched?: <span class="built_in">Function</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"pushScene"</span>);</span><br><span class="line">    cc.game.addPersistRootNode(<span class="keyword">this</span>.node);</span><br><span class="line">    <span class="keyword">this</span>.sceneStack.push(<span class="keyword">this</span>.node);</span><br><span class="line">    <span class="keyword">this</span>.director.loadScene(scene, <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.node.active = <span class="literal">false</span>;</span><br><span class="line">      <span class="comment">//打印</span></span><br><span class="line">      <span class="comment">// printStack()</span></span><br><span class="line">      onLaunched &amp;&amp; onLaunched(options);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * popScene &amp; pushScene</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  popScene() &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="keyword">this</span>.sceneStack.pop();</span><br><span class="line">    node.active = <span class="literal">true</span>;</span><br><span class="line">    node.getComponent(<span class="string">'BaseScene'</span>).onShowFromStack()</span><br><span class="line">    cc.game.removePersistRootNode(node);</span><br><span class="line">    <span class="keyword">this</span>.node.destroy()</span><br><span class="line">    <span class="keyword">this</span>.destroy()</span><br><span class="line">    <span class="comment">//打印</span></span><br><span class="line">    <span class="comment">// printStack()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 替换Scene</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  replaceScene(scene: <span class="built_in">string</span>, onLaunched?: <span class="built_in">Function</span>)&#123;</span><br><span class="line">    <span class="keyword">this</span>.director.loadScene(scene, <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//打印</span></span><br><span class="line">      <span class="comment">// printStack()</span></span><br><span class="line">      onLaunched &amp;&amp; onLaunched(options);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h2 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h2><ul>
+<li>在页面<code>pushScene</code>时将页面<code>node</code>设置为常驻节点并隐藏，并且将<code>node</code>存入栈<code>sceneStack</code>中。</li>
+<li>当页面<code>popScene</code>时，在栈中取出栈顶元素，将栈顶元素取消常驻节点并设置显示，并且将当前页面销毁。</li>
+<li>在<code>popScene</code>时适时调用<code>onShowFromStack</code>方法，用来模拟一个<code>onshow</code>方法</li>
+</ul>
+<h2 id="待开源"><a href="#待开源" class="headerlink" title="待开源"></a>待开源</h2>
       
     </div>
 
@@ -557,6 +562,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/20200518-cocos小游戏开发系列三.html" rel="prev" title="20200518-cocos小游戏开发系列三">
+                20200518-cocos小游戏开发系列三 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -632,7 +641,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -644,6 +653,8 @@
                 <div class="site-state-item site-state-categories">
                   
                     
+                    
+                      
                     
                       
                     
@@ -671,6 +682,8 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
@@ -770,7 +783,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">1.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解读"><span class="nav-number">2.</span> <span class="nav-text">解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#待开源"><span class="nav-number">3.</span> <span class="nav-text">待开源</span></a></li></ol></div>
             
 
           </div>

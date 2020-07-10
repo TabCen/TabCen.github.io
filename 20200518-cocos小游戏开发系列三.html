@@ -96,23 +96,25 @@
 
 
 
-  <meta name="description" content="今日而言治术，则莫若综合名实；今日而言学术，则莫若取笃实践履之士。物穷则变，救浮华者莫若质。积翫之后，振之以猛，意在斯乎！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="TabCen&#39;s blog~">
-<meta property="og:url" content="http://TabCen.github.io/categories/hexo/index.html">
+  <meta name="description" content="cocos开发小游戏过程中，由于发布平台的不同，可能需要对不同平台做兼容处理。本文就是介绍如何采用简单工厂模式实现平台兼容。同时，可以在开发过程中快速浏览页面效果，无须构建到不同平台再用各种平台IDE进行查看页面；极大得提升了工作效率。   构建平台：浏览器、微信小程序 语言：TS （由于TS具有类型检测，以及通用的面向对象编程方式）  设计接口 platformInterface.ts 在微信">
+<meta name="keywords" content="游戏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20200518-cocos小游戏开发系列三">
+<meta property="og:url" content="http://TabCen.github.io/20200518-cocos小游戏开发系列三.html">
 <meta property="og:site_name" content="TabCen&#39;s blog~">
-<meta property="og:description" content="今日而言治术，则莫若综合名实；今日而言学术，则莫若取笃实践履之士。物穷则变，救浮华者莫若质。积翫之后，振之以猛，意在斯乎！">
+<meta property="og:description" content="cocos开发小游戏过程中，由于发布平台的不同，可能需要对不同平台做兼容处理。本文就是介绍如何采用简单工厂模式实现平台兼容。同时，可以在开发过程中快速浏览页面效果，无须构建到不同平台再用各种平台IDE进行查看页面；极大得提升了工作效率。   构建平台：浏览器、微信小程序 语言：TS （由于TS具有类型检测，以及通用的面向对象编程方式）  设计接口 platformInterface.ts 在微信">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-10T15:40:02.278Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TabCen&#39;s blog~">
-<meta name="twitter:description" content="今日而言治术，则莫若综合名实；今日而言学术，则莫若取笃实践履之士。物穷则变，救浮华者莫若质。积翫之后，振之以猛，意在斯乎！">
+<meta name="twitter:title" content="20200518-cocos小游戏开发系列三">
+<meta name="twitter:description" content="cocos开发小游戏过程中，由于发布平台的不同，可能需要对不同平台做兼容处理。本文就是介绍如何采用简单工厂模式实现平台兼容。同时，可以在开发过程中快速浏览页面效果，无须构建到不同平台再用各种平台IDE进行查看页面；极大得提升了工作效率。   构建平台：浏览器、微信小程序 语言：TS （由于TS具有类型检测，以及通用的面向对象编程方式）  设计接口 platformInterface.ts 在微信">
 
 
 
 
 
 
-  <link rel="canonical" href="http://TabCen.github.io/categories/hexo/">
+  <link rel="canonical" href="http://TabCen.github.io/20200518-cocos小游戏开发系列三.html">
 
 
 
@@ -122,7 +124,7 @@
   };
 </script>
 
-  <title>分类: hexo | TabCen's blog~</title>
+  <title>20200518-cocos小游戏开发系列三 | TabCen's blog~</title>
   
 
 
@@ -170,7 +172,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -370,89 +372,233 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>hexo<small>分类</small>
-        </h2>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block" backround-color="#3296fa">
+    <link itemprop="mainEntityOfPage" href="http://TabCen.github.io/20200518-cocos小游戏开发系列三.html">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="TabCen">
+      <meta itemprop="description" content="今日而言治术，则莫若综合名实；今日而言学术，则莫若取笃实践履之士。物穷则变，救浮华者莫若质。积翫之后，振之以猛，意在斯乎！">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/15625074?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TabCen's blog~">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/20190212-hexonote.html" itemprop="url">
-            
-              <span itemprop="name">hexo使用笔记</span>
-            
-          </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">20200518-cocos小游戏开发系列三
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-12T18:16:22+08:00" content="2019-02-12">
-          02-12
-        </time>
-      </div>
+              
+            
+          </h2>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-18 17:14:07" itemprop="dateCreated datePublished" datetime="2020-05-18T17:14:07+08:00">2020-05-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-07-10 23:40:02" itemprop="dateModified" datetime="2020-07-10T23:40:02+08:00">2020-07-10</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/游戏/" itemprop="url" rel="index"><span itemprop="name">游戏</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>cocos开发小游戏过程中，由于发布平台的不同，可能需要对不同平台做兼容处理。本文就是介绍如何采用<code>简单工厂模式</code>实现平台兼容。<br>同时，可以在开发过程中快速浏览页面效果，无须构建到不同平台再用各种平台IDE进行查看页面；极大得提升了工作效率。</p>
+</blockquote>
+<ul>
+<li>构建平台：浏览器、微信小程序</li>
+<li>语言：TS （由于TS具有类型检测，以及通用的面向对象编程方式）</li>
+</ul>
+<h2 id="设计接口-platformInterface-ts"><a href="#设计接口-platformInterface-ts" class="headerlink" title="设计接口 platformInterface.ts"></a>设计接口 platformInterface.ts</h2><ul>
+<li>在微信小游戏环境中，可以直接调用 wx.showToast()来创建一个弹框。如果直接在业务代码中直接调用wx.showToast()在浏览器中必然报错。’wx’ is not defined,所以。先抽出一个公用接口，里面是一些常用的功能方法声明。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">interface</span> PlatformInterface &#123;</span><br><span class="line">  showToast(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">  showModal(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">  showLoading(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">  hideLoading(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">  hideToast(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">  showActionSheet(object?: <span class="built_in">Object</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="构建不同平台的实现类"><a href="#构建不同平台的实现类" class="headerlink" title="构建不同平台的实现类"></a>构建不同平台的实现类</h2><p><strong> 注意 </strong> ： 在ts中如果没有声明<code>wx</code>直接调用wx方法会报错。编译失败。所以，创建一个文件使用declare告诉编译器 “<code>wx</code>是存在的”</p>
+<h3 id="首先定义-wx"><a href="#首先定义-wx" class="headerlink" title="首先定义 wx"></a>首先定义 <code>wx</code></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 wx.d.ts 文件中声明wx对象。</span></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">var</span> wx;</span><br></pre></td></tr></table></figure>
+<h3 id="PlatformWx-ts中"><a href="#PlatformWx-ts中" class="headerlink" title="PlatformWx.ts中"></a>PlatformWx.ts中</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PlatformInterface <span class="keyword">from</span> <span class="string">"./platformInterface"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> PlatformWx <span class="keyword">implements</span> PlatformInterface&#123;</span><br><span class="line">  <span class="comment">//MARK : PlatformInterface</span></span><br><span class="line">  showToast(object): <span class="built_in">void</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"showToast"</span>,wx);</span><br><span class="line">    wx.showToast(object) <span class="comment">// 此处注意 在ts中如果未定义wx 此处会报错。所以</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="PlatformWeb-ts中"><a href="#PlatformWeb-ts中" class="headerlink" title="PlatformWeb.ts中"></a>PlatformWeb.ts中</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PlatformInterface <span class="keyword">from</span> <span class="string">"./platformInterface"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> PlatformWeb <span class="keyword">implements</span> PlatformInterface &#123;</span><br><span class="line">  <span class="comment">//MARK : PlatformInterface</span></span><br><span class="line">  showToast() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"____web"</span>);</span><br><span class="line">    alert(<span class="string">"__web"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="定义实现对象cg"><a href="#定义实现对象cg" class="headerlink" title="定义实现对象cg"></a>定义实现对象<code>cg</code></h2><p>最后根据不同的环境声明不同的实现方法</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PlatformWeb <span class="keyword">from</span> <span class="string">"./_web"</span>;</span><br><span class="line"><span class="keyword">import</span> PlatformWx <span class="keyword">from</span> <span class="string">"./_wx"</span>;</span><br><span class="line"><span class="keyword">import</span> PlatformInterface <span class="keyword">from</span> <span class="string">"./platformInterface"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cg: PlatformInterface = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'env'</span>,cc.sys.browserType);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'wx'</span>,cc.sys.BROWSER_TYPE_WECHAT_GAME);</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (cc.sys.browserType) &#123;</span><br><span class="line">  <span class="keyword">case</span> cc.sys.BROWSER_TYPE_WECHAT_GAME:&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'当前环境 wxgame'</span>)</span><br><span class="line">    cg = <span class="keyword">new</span> PlatformWx()</span><br><span class="line">  &#125;<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'当前环境 webgame'</span>)</span><br><span class="line">    cg = <span class="keyword">new</span> PlatformWeb()</span><br><span class="line">  &#125;<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> cg;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>此处采用<code>简单工厂模式</code>处理类不同的实现逻辑。可提高代码的扩展性。如果后期需要加不同的平台，只需要再创建一个平台类实现了PlatformInterface就可以了。<br>类似的需求还有：</p>
+<ul>
+<li>网络请求封装</li>
+<li>数据存储逻辑封装</li>
+</ul>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/游戏/" rel="tag"># 游戏</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/20200510-cocos小游戏系列二.html" rel="next" title="20200510-cocos小游戏系列二">
+                <i class="fa fa-chevron-left"></i> 20200510-cocos小游戏系列二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+  </div>
+  
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
 
   
 
 
-
-          </div>
-          
 
         </div>
         
@@ -473,8 +619,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -623,6 +778,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计接口-platformInterface-ts"><span class="nav-number">1.</span> <span class="nav-text">设计接口 platformInterface.ts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建不同平台的实现类"><span class="nav-number">2.</span> <span class="nav-text">构建不同平台的实现类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先定义-wx"><span class="nav-number">2.1.</span> <span class="nav-text">首先定义 wx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PlatformWx-ts中"><span class="nav-number">2.2.</span> <span class="nav-text">PlatformWx.ts中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PlatformWeb-ts中"><span class="nav-number">2.3.</span> <span class="nav-text">PlatformWeb.ts中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义实现对象cg"><span class="nav-number">3.</span> <span class="nav-text">定义实现对象cg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -747,6 +919,10 @@
 
 
   
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
 
   
 
@@ -757,6 +933,34 @@
 
   
 
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'd595e6850c0f2f70e40b',
+    clientSecret: 'b0f130ba5e1c62e4c9a2ccdd4bb2268b91b98d9b',
+    repo: 'tabcen.github.io',
+    owner: 'TabCen',
+    admin: ['TabCen'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
 
 
   
